@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Got Next?</title>
+    <style>
+        .button {
+            width: 150px;
+            height: 250px;
+            font-size: 35px;
+            font-weight: bold;
+            margin: 15px;
+            margin-top: 5px;
+            font-family: Garamond, sans-serif;
+            background-image: url(https://t3.ftcdn.net/jpg/04/14/41/52/360_F_414415250_SSetMKFnyxAtHmfAyYcuI4xrhN6915gJ.jpg); 
+            background-position: center;
+            background-size: cover;
+            color: black;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 3px solid black;
+
+        }
+        .button:hover {
+            border: 5px solid black;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 70%;
+            margin-top: 5px;
+            border: 2px solid black; 
+            background-color: grey;
+        }
+        .hidden-window {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 240px;
+            background-color: white;
+            border: 2px solid black;
+            z-index: 9999; 
+            padding: 20px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .green { background-color: green; }
+        .blue { background-color: blue; }
+        .yellow { background-color: yellow; }
+        .grey { background-color: grey;}
+
+        h1 {
+            text-align: center;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 30px;
+            margin-top: 1px;
+            margin-bottom: 10px;
+
+        }
+
+        h3{
+
+            margin-top: 0px;
+            margin-left: 180px;
+            margin-bottom: 0px;
+        }
+
+        p{
+            font-weight: bold;
+        }
+
+        .bottom-buttons-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; 
+        }
+
+        .bottom-button-open {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            position: fixed;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: lightgoldenrodyellow;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+        }
+
+        .bottom-button-close {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            bottom: 20px; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: lightgoldenrodyellow;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .bottom-button-open:hover{
+            border: 3px solid black;
+        }
+
+        .bottom-button-close:hover{
+            border: 3px solid black;
+        }
+
+        .team1-button{
+
+            text-align: center;
+            margin-top: 60px;
+            width: 200px;
+            font-size: 25px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightblue;
+        
+
+        }
+
+        .team1-button:hover{
+            border: 3px solid black;
+        }
+
+        .team2-button:hover{
+            border: 3px solid black;
+        }
+
+        .team2-button{
+
+            text-align: center;
+            width: 200px;
+            font-size: 25px;
+            margin-top: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+        }     
+
+        .mod-button{
+            display: none;
+            text-align: center;
+            width: 200px;
+            height: 30px;
+            font-size: 18px;
+            margin-top: 0px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .option-button{
+            text-align: center;
+            width: 200px;
+            height: 30px;
+            font-size: 18px;
+            margin-top: 0px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+        }
+
+        .option-button:hover{
+            border: 3px solid black;
+        }
+
+        .closecourt-button{
+            text-align: center;
+            width: 200px;
+            height: 30px;
+            font-size: 18px;
+            margin-top: 0px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+            display: none;
+        }
+
+        .closecourt-button:hover{
+            border: 3px solid black;
+        }
+
+        .opencourt-button{
+            text-align: center;
+            width: 200px;
+            height: 30px;
+            font-size: 18px;
+            margin-top: 0px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            background-color: lightgoldenrodyellow;
+            display: "block";
+        }
+        
+        .opencourt-button:hover{
+            border: 3px solid black;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+        }
+
+        .x-button{
+            text-align: center;
+            background-color: rgba(0, 208, 255, 0);
+        }
+
+        .x-button:hover{
+            border: 3px solid black;
+        }
+
+        .backButton{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            bottom: 20px; 
+            left: 10%;
+            transform: translateX(-100%);
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: lightgoldenrodyellow;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .backButton:hover{
+            border: 3px solid black;
+        }
+
+        .courtStyle{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+        }
+
+        .recLink{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            bottom: 20px; 
+            right: 10%;
+            transform: translateX(100%);
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: lightgoldenrodyellow;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .recLink:hover{
+            border: 3px solid black;
+        }
+
+        .admin {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            top: 72px;
+            margin-top: 1px;
+            transform: translateX(40%);
+            position: fixed;
+            right: 50%
+
+        }
+
+    </style>
+    <script>
+
+        // Define an array of colors
+        var colors = ["green", "green", "green", "green", "green", "green"];
+
+        // Define an array to store players ahead for each court
+        var playersAhead = [0, 0, 0, 0, 0, 0];
+
+        // Function to change the color of the circle
+        function changeColor(index) {
+            if (playersAhead[index] >= 10 && playersAhead[index] < 15) {
+                colors[index] = "yellow";
+            } else if (playersAhead[index] >= 15) {
+                colors[index] = "blue";
+            } else {
+                colors[index] = "green";
+            }
+            document.getElementById('circleDisplay' + index).className = "circle " + colors[index];
+        }
+
+        // Function to increment players ahead
+        function incrementPlayersAhead(index) {
+            playersAhead[index]++;
+            changeColor(index);
+            checkPlayerCount(index)
+            document.getElementById('playersAhead' + index).innerText = "Players Ahead: " + playersAhead[index];
+        }
+
+        // Function to toggle the visibility of the hidden window associated with the button
+        function toggleHiddenWindow(buttonId) {
+            var hiddenWindow = document.getElementById("hiddenWindow" + buttonId);
+                if (hiddenWindow.style.display === "none") {
+                    hiddenWindow.style.display = "block"; // Show the window
+                } else {
+                    hiddenWindow.style.display = "none"; // Hide the window
+                }
+        }
+
+        // Function to toggle Moderator window
+        function toggleModHiddenWindow(buttonId) {
+            var modHiddenWindow = document.getElementById("modHiddenWindow" + buttonId);
+            if (modHiddenWindow.style.display === "none") {
+                modHiddenWindow.style.display = "block"; // Show the window
+            } else {
+                modHiddenWindow.style.display = "none"; // Hide the window
+            }
+        }
+
+        function toggleAndSub(buttonId){
+            toggleModHiddenWindow(buttonId)
+            leavingTeam(buttonId)
+            
+            if (playersAhead[buttonId] < 10){
+                hideModerate(buttonId)
+            }
+        }
+
+        function leavingTeam(index){
+            playersAhead[index] -= 5;
+            changeColor(index)
+            document.getElementById('playersAhead' + index).innerText = "Players Ahead: " + playersAhead[index];
+        }
+
+
+        // Clears Current Queue
+        function clearQueue(index){
+            playersAhead[index] = 0;
+            document.getElementById('playersAhead' + index).innerText = "Players Ahead: " + playersAhead[index];
+            changeColor(index);
+            hideModerate(index);
+        }
+
+        function hideModerate(index){
+            document.getElementById("moderateButton" + index).style.display = "none";
+        }
+
+        // Open or close
+        function closeCourt(index){
+            colors[index] = "grey";
+            playersAhead[index] = 0;
+            document.getElementById('playersAhead' + index).innerText = "Players Ahead: " + playersAhead[index];
+            document.getElementById('circleDisplay' + index).className = "circle " + colors[index];
+            document.getElementById("closeCourt" + index).style.display = "none";
+            document.getElementById("openCourt" + index).style.display = "block";
+            hideModerate(index);
+        }
+
+        function openCourt(index){
+            colors[index] = "green";
+            document.getElementById('circleDisplay' + index).className = "circle " + colors[index];
+            document.getElementById("closeCourt" + index).style.display = "block";
+            document.getElementById("openCourt" + index).style.display = "none";
+        }
+
+        function checkPlayerCount(index){
+            if (playersAhead[index] >= 10){
+                document.getElementById("moderateButton" + index).style.display = "block";
+            } else {
+                document.getElementById("moderateButton" + index).style.display = "none";
+            }
+        }
+
+        function openAll(){
+            changeColor(0);
+            changeColor(1);
+            changeColor(2);
+            changeColor(3);
+            changeColor(4);
+            changeColor(5);
+            document.getElementById("openallcourts").style.display = "none";
+            document.getElementById("closeallcourts").style.display = "block";
+        }
+
+        function closeAll(){
+            closeCourt(0);
+            closeCourt(1);
+            closeCourt(2);
+            closeCourt(3);
+            closeCourt(4);
+            closeCourt(5);
+            document.getElementById("closeallcourts").style.display = "none";
+            document.getElementById("openallcourts").style.display = "block";
+        }
+
+        function backToMain(){
+            let mainPage = "MainMenu.html";
+            window.location.href = mainPage;
+        }
+
+        function recLink(){
+            let mainPage = "https://www.uc.edu/campus-life/campus-rec.html";
+            window.location.href = mainPage;
+        }
+
+        function createCourts() {
+            var numCourts = document.getElementById("numCourts").value;
+            var courtsContainer = document.getElementById("courtsContainer");
+            courtsContainer.innerHTML = ""; // Clear previous courts
+
+            for (var i = 1; i <= numCourts; i++) {
+               var courtDiv = document.createElement("div");
+                courtDiv.innerHTML = `
+                <div>
+                    <div id="circleDisplay${i - 1}" class="circle"></div>
+                    <button id="myButton${i - 1}" class="button" onclick="toggleHiddenWindow(${i - 1})">Court ${String.fromCharCode(65 + i - 1)}</button>
+                </div>
+            `;
+            courtsContainer.appendChild(courtDiv);
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+<h1> Who Got Next? </h1> <br>
+<p class="admin">
+    (Admin)
+</p>
+
+<label for="numCourts">Number of Courts:</label>
+<input type="number" id="numCourts" name="numCourts" min="1" value="1">
+<button onclick="createCourts()">Create Courts</button>
+
+<div id="courtsContainer" class="button-container">
+    
+</div>
+
+<!-- Display the circles -->
+<div class="button-container">
+    <div>
+        <div id="circleDisplay0" class="circle"></div>
+        <button id="myButton0" class="button" onclick="toggleHiddenWindow(0)">A</button>
+    </div>
+    <div>
+        <div id="circleDisplay1" class="circle"></div>
+        <button id="myButton1" class="button" onclick="toggleHiddenWindow(1)">B</button>
+    </div>
+    <div>
+        <div id="circleDisplay2" class="circle"></div>
+        <button id="myButton2" class="button" onclick="toggleHiddenWindow(2)">C</button>
+    </div>
+    <div>
+        <div id="circleDisplay3" class="circle"></div>
+        <button id="myButton3" class="button" onclick="toggleHiddenWindow(3)">D</button>
+    </div>
+    <div>
+        <div id="circleDisplay4" class="circle"></div>
+        <button id="myButton4" class="button" onclick="toggleHiddenWindow(4)">E</button>
+    </div>
+    <div>
+        <div id="circleDisplay5" class="circle"></div>
+        <button id="myButton5" class="button" onclick="toggleHiddenWindow(5)">F</button>
+    </div>
+    <div class ="bottom-buttons-container">
+        <button id="openallcourts" class="bottom-button-open" onclick="openAll()">Open All</button>
+        <button id="closeallcourts" class="bottom-button-close" onclick="closeAll()">Close All</button>
+    </div>
+</div>
+
+    <button class="backButton" onclick="backToMain()">Back</button>
+    <button class="recLink" onclick="recLink()">Rec Link</button>
+
+<!-- Hidden windows -->
+<div id="hiddenWindow0" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(0)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court A:</h2>
+    <p id="playersAhead0">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(0)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(0)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt0" class="closecourt-button" onclick="closeCourt(0)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt0" class="opencourt-button" onclick="openCourt(0)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton0" class="mod-button" onclick="toggleModHiddenWindow(0)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow0" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button" onclick="toggleModHiddenWindow(0)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(0)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(0)">Team 2</button>
+    </div>
+
+</div>
+
+<div id="hiddenWindow1" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(1)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court B:</h2>
+    <p id="playersAhead1">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(1)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(1)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt1" class="closecourt-button" onclick="closeCourt(1)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt1" class="opencourt-button" onclick="openCourt(1)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton1" class="mod-button" onclick="toggleModHiddenWindow(1)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow1" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button"onclick="toggleModHiddenWindow(1)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(1)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(1)">Team 2</button>
+    </div>
+</div>
+
+<div id="hiddenWindow2" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(2)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court C:</h2>
+    <p id="playersAhead2">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(2)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(2)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt2" class="closecourt-button" onclick="closeCourt(2)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt2" class="opencourt-button" onclick="openCourt(2)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton2" class="mod-button" onclick="toggleModHiddenWindow(2)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow2" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button" onclick="toggleModHiddenWindow(2)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(2)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(2)">Team 2</button>
+    </div>
+</div>
+
+<div id="hiddenWindow3" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(3)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court D:</h2>
+    <p id="playersAhead3">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(3)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(3)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt3" class="closecourt-button" onclick="closeCourt(3)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt3" class="opencourt-button" onclick="openCourt(3)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton3" class="mod-button" onclick="toggleModHiddenWindow(3)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow3" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button" onclick="toggleModHiddenWindow(3)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(3)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(3)">Team 2</button>
+    </div>
+</div>
+
+<div id="hiddenWindow4" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(4)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court E:</h2>
+    <p id="playersAhead4">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(4)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(4)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt4" class="closecourt-button" onclick="closeCourt(4)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt4" class="opencourt-button" onclick="openCourt(4)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton4" class="mod-button" onclick="toggleModHiddenWindow(4)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow4" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button" onclick="toggleModHiddenWindow(4)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(4)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(4)">Team 2</button>
+    </div>
+</div>
+
+<div id="hiddenWindow5" class="hidden-window">
+    <h3>
+        <button class="x-button" onclick="toggleHiddenWindow(5)">X</button>
+    </h3>
+    <h2 class="courtStyle">Court F:</h2>
+    <p id="playersAhead5">Players Ahead: 0</p>
+    <button class="option-button" onclick="incrementPlayersAhead(5)" style="margin-bottom: 7px;">Increment Players</button>
+    <div>
+        <button class="option-button" onclick="clearQueue(5)" style="margin-bottom: 7px;">Clear</button>
+    </div>
+    <div>
+        <button id="closeCourt5" class="closecourt-button" onclick="closeCourt(5)" style="margin-bottom: 7px">Close Court</button>
+        <button id="openCourt5" class="opencourt-button" onclick="openCourt(5)" style="margin-bottom: 7px">Open Court</button>
+    </div>
+    <div>
+        <button id="moderateButton5" class="mod-button" onclick="toggleModHiddenWindow(5)">Moderate</button>
+    </div>
+
+    <div id="modHiddenWindow5" class="hidden-window" style="margin-top: 20px;">
+        <h3>
+            <button class="x-button" onclick="toggleModHiddenWindow(5)">X</button>
+        </h3>
+        <h2>Moderate:</h2>
+        <button class="team1-button" onclick="toggleAndSub(5)">Team 1</button> <br>
+        <button class="team2-button" onclick="toggleAndSub(5)">Team 2</button>
+    </div>
+</div>
+
+</body>
+</html>

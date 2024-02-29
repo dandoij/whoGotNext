@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Got Next?</title>
+    <style>
+        .button {
+            width: 150px;
+            height: 250px;
+            font-size: 35px;
+            font-weight: bold;
+            margin: 15px;
+            margin-top: 5px;
+            font-family: Garamond, sans-serif;
+            background-image: url(https://t3.ftcdn.net/jpg/04/14/41/52/360_F_414415250_SSetMKFnyxAtHmfAyYcuI4xrhN6915gJ.jpg); 
+            background-position: center;
+            background-size: cover;
+            color: black;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            border: 2px solid black;
+        }
+        .button:hover {
+            border: 5px solid black;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            font-family: Garamond, sans-serif;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-top: 5px;
+            border: 2px solid black; 
+            background-color: green;
+        }
+        .hidden-window {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 175px;
+            background-color: white;
+            border: 2px solid black;
+            z-index: 9999; /* Ensure it appears above other content */
+            padding: 20px;
+            text-align: center;
+            
+            font-family: Garamond, sans-serif;
+        }
+        .green { background-color: green; }
+        .orangered { background-color: orangered; }
+        .yellow { background-color: yellow; }
+        .grey { background-color: grey;}
+
+        .header {
+            padding: 40px;
+            text-align: center;
+            background: #bc271a;
+            color: rgb(1, 1, 1);
+            font-size: 30px;
+            font-family: Garamond, sans-serif
+        }
+        
+        .header_2 {
+            padding: 40px;
+            text-align: center;
+            color: rgb(1, 1, 1);
+            font-size: 30px;
+        }
+
+        .img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            }
+
+        .link {
+            font-family: Garamond, sans-serif;
+            text-align: center;
+            bottom: 20px;
+            position: fixed;;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .backButton{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            bottom: 20px; 
+            left: 10%;
+            transform: translateX(-100%);
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: lightgoldenrodyellow;
+            color: black;
+            border: 2px solid black;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .backButton:hover{
+            border: 3px solid black;
+        }
+
+    </style>
+    <script>
+        // Define an array of colors
+        var colors = ["green", "green", "green", "green", "green", "green"];
+
+        // Define an array to store players ahead for each court
+        var playersAhead = [0, 0, 0, 0, 0, 0];
+
+        // Function to change the color of the circle
+        function changeColor(index) {
+            if (playersAhead[index] <= 15) {
+                colors[index] = "orangred";
+            } else if (playersAhead[index] > 9) {
+                colors[index] = "yellow";
+            } else {
+                colors[index] = "green";
+            }
+            document.getElementById('circleDisplay' + index).className = "circle " + colors[index];
+        }
+        
+        // Function to add yourself to the queue
+        function incrementPlayersAhead(index) {
+            let addPlayer = document.getElementById("addPlayer" + index);
+            let removePlayer = document.getElementById("removePlayer" + index);
+            playersAhead[index]++;
+            changeColor(index);
+            document.getElementById('playersAhead' + index).innerText = "Players Waiting: " + playersAhead[index];
+            if (addPlayer.style.display === "none") {
+                addPlayer.style.display = "inline-block";
+                removePlayer.style.display = "none";
+            } else {
+                addPlayer.style.display = "none";
+                removePlayer.style.display = "inline-block";
+            }
+        }
+
+        // Function to remove yourself from the queue
+        function clearQueue(index) {
+            let addPlayer = document.getElementById("addPlayer" + index);
+            let removePlayer = document.getElementById("removePlayer" + index);
+            if (addPlayer.style.display === "none") {
+                addPlayer.style.display = "inline-block";
+                removePlayer.style.display = "none";
+            } else {
+                addPlayer.style.display = "none";
+                removePlayer.style.display = "inline-block";
+            }
+            playersAhead[index]--;
+            changeColor(index);
+            document.getElementById('playersAhead' + index).innerText = "Players Waiting: " + playersAhead[index];
+        }
+
+        // Function to toggle the visibility of the hidden window associated with the button
+        function toggleHiddenWindow(buttonId) {
+            var hiddenWindow = document.getElementById("hiddenWindow" + buttonId);
+            if (hiddenWindow.style.display === "none") {
+                hiddenWindow.style.display = "block"; // Show the window
+            } else {
+                hiddenWindow.style.display = "none"; // Hide the window
+            }
+        }
+        function backToMain(){
+            mainPage = "MainMenu.html";
+            window.location.href = mainPage;
+        }
+
+    </script>
+</head>
+<body>
+    <!-- Header -->
+          
+        
+    <div class="header">
+
+    <h1>Who Got Next?</h1> 
+    
+    </div>
+   
+
+<!-- Display the circles -->
+<div class="button-container">
+    <div>
+        <div id="circleDisplay0" class="circle"></div>
+        <button id="myButton0" class="button" onclick="toggleHiddenWindow(0)">A</button>
+    </div>
+    <div>
+        <div id="circleDisplay1" class="circle"></div>
+        <button id="myButton1" class="button" onclick="toggleHiddenWindow(1)">B</button>
+    </div>
+    <div>
+        <div id="circleDisplay2" class="circle"></div>
+        <button id="myButton2" class="button" onclick="toggleHiddenWindow(2)">C</button>
+    </div>
+    <div>
+        <div id="circleDisplay3" class="circle"></div>
+        <button id="myButton3" class="button" onclick="toggleHiddenWindow(3)">D</button>
+    </div>
+    <div>
+        <div id="circleDisplay4" class="circle"></div>
+        <button id="myButton4" class="button" onclick="toggleHiddenWindow(4)">E</button>
+    </div>
+    <div>
+        <div id="circleDisplay5" class="circle"></div>
+        <button id="myButton5" class="button" onclick="toggleHiddenWindow(5)">F</button>
+    </div>
+</div>
+
+
+<!-- Hidden windows -->
+<div id="hiddenWindow0" class="hidden-window" >
+    <h3>
+        <button onclick="toggleHiddenWindow(0)">X</button>
+    </h3>
+    <h2>Queue A:</h2>
+    <p id="playersAhead0">Players Waiting: 0</p>
+    <button id="addPlayer0" onclick="incrementPlayersAhead(0)">Join Queue</button>
+    <button id="removePlayer0" style="display: none;" onclick="clearQueue(0)">Leave Queue</button>
+    
+</div>
+
+<div id="hiddenWindow1" class="hidden-window">
+    <h3>
+        <button onclick="toggleHiddenWindow(1)">X</button>
+    </h3>
+    <h2>Queue B:</h2>
+    <p id="playersAhead1">Players Waiting: 0</p>
+    <button id="addPlayer1" onclick="incrementPlayersAhead(1)">Join Queue</button>
+    <button id="removePlayer1" style="display: none;" onclick="clearQueue(1)">Leave Queue</button>
+</div>
+
+<div id="hiddenWindow2" class="hidden-window">
+    <h3>
+        <button onclick="toggleHiddenWindow(2)">X</button>
+    </h3>
+    <h2>Queue C:</h2>
+    <p id="playersAhead2">Players Waiting: 0</p>
+    <button id="addPlayer2" onclick="incrementPlayersAhead(2)">Join Queue</button>
+    <button id="removePlayer2" style="display: none;" onclick="clearQueue(2)">Leave Queue</button>
+</div>
+
+<div id="hiddenWindow3" class="hidden-window">
+    <h3>
+        <button onclick="toggleHiddenWindow(3)">X</button>
+    </h3>
+    <h2>Queue D:</h2>
+    <p id="playersAhead3">Players Waiting: 0</p>
+    <button id="addPlayer3" onclick="incrementPlayersAhead(3)">Join Queue</button>
+    <button id="removePlayer3" style="display: none;" onclick="clearQueue(3)">Leave Queue</button>
+</div>
+
+<div id="hiddenWindow4" class="hidden-window">
+    <h3>
+        <button onclick="toggleHiddenWindow(4)">X</button>
+    </h3>
+    <h2>Queue E:</h2>
+    <p id="playersAhead4">Players Waiting: 0</p>
+    <button id="addPlayer4" onclick="incrementPlayersAhead(4)">Join Queue</button>
+    <button id="removePlayer4" style="display: none;" onclick="clearQueue(4)">Leave Queue</button>
+</div>
+
+<div id="hiddenWindow5" class="hidden-window">
+    <h3>
+        <button onclick="toggleHiddenWindow(5)">X</button>
+    </h3>
+    <h2>Queue F:</h2>
+    <p id="playersAhead5">Players Waiting: 0</p>
+    <div>
+    <button id="addPlayer5" onclick="incrementPlayersAhead(5)">Join Queue</button>
+    </div>
+    <div>
+    <button id="removePlayer5" style="display: none;" onclick="clearQueue(5)">Leave Queue</button>
+    </div> 
+</div>
+    <button class="backButton" onclick="backToMain()">Back</button>
+<div class="link"> 
+<a  href='https://www.uc.edu/campus-life/campus-rec.html' >University of Cincinnati Recreation Center Website</a>
+</div>
+</body>
+</html>
